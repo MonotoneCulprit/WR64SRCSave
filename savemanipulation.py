@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 import srcomapi
 import srcomapi.datatypes as dt
 import requests
@@ -7,6 +8,10 @@ import json
 import pandas as pd
 import ids
 import splits
+
+now = datetime.now()
+date_string = now.strftime("%m-%d-%Y")
+filename = f"wr64_srcomsave_{date_string}.eep"
 
 def gettopthree (level_id, category_id):
     requesturl = f"https://www.speedrun.com/api/v1/leaderboards/wr64/level/{level_id}/{category_id}?var-p85901vn=rqv42owq&top=3"
@@ -146,7 +151,7 @@ def extractnames(data):
     return data.Player[0], data.Player[1], data.Player[2]
 
 def writetooffset(data, offset):
-    with open("Wave Race 64 BLANK.eep", "r+b") as wr64_save:
+    with open(filename, "r+b") as wr64_save:
         wr64_save.seek(offset)
         wr64_save.write(data)
 
@@ -183,12 +188,15 @@ def createinitialshex(name):
     
     initfull = '1' + init1 + init2 + init3
     
-    inithex = f"{int(initfull, 2):04X}"
+    initnum = int(initfull, base=2)
+
+    
+    inithex = f"{initnum:04X}"
     
     return inithex
 
 def calculatechecksum():
-     with open("Wave Race 64 BLANK.eep", "r+b") as wr64_save:
+     with open(filename, "r+b") as wr64_save:
         data = wr64_save.read(0x200)
 
         # Slice from byte index 4 to 0x1FF

@@ -3,6 +3,7 @@
 
 import os
 import sys
+from datetime import datetime
 import srcomapi
 import srcomapi.datatypes as dt
 import requests
@@ -12,7 +13,15 @@ import ids
 import splits
 import savemanipulation as sm
 
+# Connect to srcomapi
 api = srcomapi.SpeedrunCom()
+
+# Create blank save with today's date
+now = datetime.now()
+date_string = now.strftime("%m-%d-%Y")
+filename = f"wr64_srcomsave_{date_string}.eep"
+with open(filename, "wb") as file:
+    file.write((b"\x00") * (0x1FF + 1))
 
 # Get 3 Lap top 3 data for each level
 SB3data = sm.gettopthree(ids.SB_id, ids.ThreeL_id)
@@ -85,6 +94,8 @@ SI3firstname, SI3secondname, SI3thirdname = sm.extractnames(SI3data)
 SI3firstname = sm.createinitialshex(SI3firstname)
 SI3secondname = sm.createinitialshex(SI3secondname)
 SI3thirdname = sm.createinitialshex(SI3thirdname)
+
+print(TC3firsttime)
 
 # Isolate 1 Lap times and names into individual variables for each level
 SB1time = sm.extracttime_mariner(SB1data)
@@ -212,7 +223,7 @@ sm.writetooffset(bytes.fromhex('FFFFFFFFFFFFFF'), 0x59)
 sm.writetooffset(bytes.fromhex(SB3firsttime), 0x60)
 
 # Write Sunny Beach 3L World Record Initials
-sm.writetooffset(bytes.fromhex(SB3firstname), 0x64)
+sm.writetooffset(bytes.fromhex(SB3firstname), 0x63)
 
 # Write Sunny Beach 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x65)
@@ -221,7 +232,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x65)
 sm.writetooffset(bytes.fromhex(SB3secondtime), 0x66)
 
 # Write Sunny Beach 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(SB3secondname), 0x6A)
+sm.writetooffset(bytes.fromhex(SB3secondname), 0x69)
 
 # Write Sunny Beach 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x6B)
@@ -230,7 +241,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x6B)
 sm.writetooffset(bytes.fromhex(SB3thirdtime), 0x6C)
 
 # Write Sunny Beach 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(SB3thirdname), 0x70)
+sm.writetooffset(bytes.fromhex(SB3thirdname), 0x6F)
 
 # Write Sunny Beach 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x71)
@@ -239,7 +250,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x71)
 sm.writetooffset(bytes.fromhex(SB1time), 0x72)
 
 # Write Sunny Beach 1L World Record Initials
-sm.writetooffset(bytes.fromhex(SB3firstname), 0x76)
+sm.writetooffset(bytes.fromhex(SB3firstname), 0x75)
 
 # Write Sunny Beach 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x77)
@@ -250,7 +261,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x77)
 sm.writetooffset(bytes.fromhex(SBay3firsttime), 0x78)
 
 # Write Sunset Bay 3L World Record Initials
-sm.writetooffset(bytes.fromhex(SBay3firstname), 0x7C)
+sm.writetooffset(bytes.fromhex(SBay3firstname), 0x7B)
 
 # Write Sunset Bay 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x7D)
@@ -259,7 +270,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x7D)
 sm.writetooffset(bytes.fromhex(SBay3secondtime), 0x7E)
 
 # Write Sunset Bay 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(SBay3secondname), 0x82)
+sm.writetooffset(bytes.fromhex(SBay3secondname), 0x81)
 
 # Write Sunset Bay 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x83)
@@ -268,7 +279,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x83)
 sm.writetooffset(bytes.fromhex(SBay3thirdtime), 0x84)
 
 # Write Sunset Bay 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(SBay3thirdname), 0x88)
+sm.writetooffset(bytes.fromhex(SBay3thirdname), 0x87)
 
 # Write Sunset Bay 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x89)
@@ -277,7 +288,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x89)
 sm.writetooffset(bytes.fromhex(SBay1time), 0x8A)
 
 # Write Sunset Bay 1L World Record Initials
-sm.writetooffset(bytes.fromhex(SBay1name), 0x8E)
+sm.writetooffset(bytes.fromhex(SBay1name), 0x8D)
 
 # Write Sunset Bay 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x8F)
@@ -288,7 +299,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x8F)
 sm.writetooffset(bytes.fromhex(MF3firsttime), 0x90)
 
 # Write Marine Fortress 3L World Record Initials
-sm.writetooffset(bytes.fromhex(MF3firstname), 0x94)
+sm.writetooffset(bytes.fromhex(MF3firstname), 0x93)
 
 # Write Marine Fortress 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0x95)
@@ -297,7 +308,7 @@ sm.writetooffset(bytes.fromhex('01'), 0x95)
 sm.writetooffset(bytes.fromhex(MF3secondtime), 0x96)
 
 # Write Marine Fortress 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(MF3secondname), 0x9A)
+sm.writetooffset(bytes.fromhex(MF3secondname), 0x99)
 
 # Write Marine Fortress 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0x9B)
@@ -306,7 +317,7 @@ sm.writetooffset(bytes.fromhex('01'), 0x9B)
 sm.writetooffset(bytes.fromhex(MF3thirdtime), 0x9C)
 
 # Write Marine Fortress 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(MF3thirdname), 0xA0)
+sm.writetooffset(bytes.fromhex(MF3thirdname), 0x9F)
 
 # Write Marine Fortress 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xA1)
@@ -315,7 +326,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xA1)
 sm.writetooffset(bytes.fromhex(MF1time), 0xA2)
 
 # Write Marine Fortress 1L World Record Initials
-sm.writetooffset(bytes.fromhex(MF1name), 0xA6)
+sm.writetooffset(bytes.fromhex(MF1name), 0xA5)
 
 # Write Marine Fortress 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xA7)
@@ -326,7 +337,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xA7)
 sm.writetooffset(bytes.fromhex(DL3firsttime), 0xA8)
 
 # Write Drake Lake 3L World Record Initials
-sm.writetooffset(bytes.fromhex(DL3firstname), 0xAC)
+sm.writetooffset(bytes.fromhex(DL3firstname), 0xAB)
 
 # Write Drake Lake 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xAD)
@@ -335,7 +346,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xAD)
 sm.writetooffset(bytes.fromhex(DL3secondtime), 0xAE)
 
 # Write Drake Lake 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(DL3secondname), 0xB2)
+sm.writetooffset(bytes.fromhex(DL3secondname), 0xB1)
 
 # Write Drake Lake 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xB3)
@@ -344,7 +355,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xB3)
 sm.writetooffset(bytes.fromhex(DL3thirdtime), 0xB4)
 
 # Write Drake Lake 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(DL3thirdname), 0xB8)
+sm.writetooffset(bytes.fromhex(DL3thirdname), 0xB7)
 
 # Write Drake Lake 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xB9)
@@ -353,7 +364,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xB9)
 sm.writetooffset(bytes.fromhex(DL1time), 0xBA)
 
 # Write Drake Lake 1L World Record Initials
-sm.writetooffset(bytes.fromhex(DL1name), 0xBE)
+sm.writetooffset(bytes.fromhex(DL1name), 0xBD)
 
 # Write Drake Lake 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xBF)
@@ -364,7 +375,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xBF)
 sm.writetooffset(bytes.fromhex(PB3firsttime), 0xC0)
 
 # Write Port Blue 3L World Record Initials
-sm.writetooffset(bytes.fromhex(PB3firstname), 0xC4)
+sm.writetooffset(bytes.fromhex(PB3firstname), 0xC3)
 
 # Write Port Blue 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xC5)
@@ -373,7 +384,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xC5)
 sm.writetooffset(bytes.fromhex(PB3secondtime), 0xC6)
 
 # Write Port Blue 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(PB3secondname), 0xCA)
+sm.writetooffset(bytes.fromhex(PB3secondname), 0xC9)
 
 # Write Port Blue 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xCB)
@@ -382,7 +393,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xCB)
 sm.writetooffset(bytes.fromhex(PB3thirdtime), 0xCC)
 
 # Write Port Blue 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(PB3thirdname), 0xD0)
+sm.writetooffset(bytes.fromhex(PB3thirdname), 0xCF)
 
 # Write Port Blue 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xD1)
@@ -391,7 +402,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xD1)
 sm.writetooffset(bytes.fromhex(PB1time), 0xD2)
 
 # Write Port Blue 1L World Record Initials
-sm.writetooffset(bytes.fromhex(PB1name), 0xD6)
+sm.writetooffset(bytes.fromhex(PB1name), 0xD5)
 
 # Write Port Blue 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xD7)
@@ -399,10 +410,10 @@ sm.writetooffset(bytes.fromhex('01'), 0xD7)
 ############## TWILIGHT CITY ##############
 
 # Write Twilight City 3L World Record Time
-sm.writetooffset(bytes.fromhex(TC3firsttime), 0xD9)
+sm.writetooffset(bytes.fromhex(TC3firsttime), 0xD8)
 
 # Write Twilight City 3L World Record Initials
-sm.writetooffset(bytes.fromhex(TC3firstname), 0xDC)
+sm.writetooffset(bytes.fromhex(TC3firstname), 0xDB)
 
 # Write Twilight City 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xDD)
@@ -411,7 +422,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xDD)
 sm.writetooffset(bytes.fromhex(TC3secondtime), 0xDE)
 
 # Write Twilight City 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(TC3secondname), 0xE2)
+sm.writetooffset(bytes.fromhex(TC3secondname), 0xE1)
 
 # Write Twilight City 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xE3)
@@ -420,7 +431,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xE3)
 sm.writetooffset(bytes.fromhex(TC3thirdtime), 0xE4)
 
 # Write Twilight City 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(TC3thirdname), 0xE8)
+sm.writetooffset(bytes.fromhex(TC3thirdname), 0xE7)
 
 # Write Twilight City 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xE9)
@@ -429,7 +440,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xE9)
 sm.writetooffset(bytes.fromhex(TC1time), 0xEA)
 
 # Write Twilight City 1L World Record Initials
-sm.writetooffset(bytes.fromhex(TC1name), 0xEE)
+sm.writetooffset(bytes.fromhex(TC1name), 0xED)
 
 # Write Twilight City 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('01'), 0xEF)
@@ -440,7 +451,7 @@ sm.writetooffset(bytes.fromhex('01'), 0xEF)
 sm.writetooffset(bytes.fromhex(SI3firsttime), 0xF0)
 
 # Write Southern Island 3L World Record Initials
-sm.writetooffset(bytes.fromhex(SI3firstname), 0xF4)
+sm.writetooffset(bytes.fromhex(SI3firstname), 0xF3)
 
 # Write Southern Island 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xF5)
@@ -449,7 +460,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xF5)
 sm.writetooffset(bytes.fromhex(SI3secondtime), 0xF6)
 
 # Write Southern Island 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(SI3secondname), 0xFA)
+sm.writetooffset(bytes.fromhex(SI3secondname), 0xF9)
 
 # Write Southern Island 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0xFB)
@@ -458,7 +469,7 @@ sm.writetooffset(bytes.fromhex('00'), 0xFB)
 sm.writetooffset(bytes.fromhex(SI3thirdtime), 0xFC)
 
 # Write Southern Island 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(SI3thirdname), 0x100)
+sm.writetooffset(bytes.fromhex(SI3thirdname), 0xFF)
 
 # Write Southern Island 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x101)
@@ -467,7 +478,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x101)
 sm.writetooffset(bytes.fromhex(SI1time), 0x102)
 
 # Write Southern Island 1L World Record Initials
-sm.writetooffset(bytes.fromhex(SI1name), 0x106)
+sm.writetooffset(bytes.fromhex(SI1name), 0x105)
 
 # Write Southern Island 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x107)
@@ -478,7 +489,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x107)
 sm.writetooffset(bytes.fromhex(GC3firsttime), 0x108)
 
 # Write Glacier Coast 3L World Record Initials
-sm.writetooffset(bytes.fromhex(GC3firstname), 0x10C)
+sm.writetooffset(bytes.fromhex(GC3firstname), 0x10B)
 
 # Write Glacier Coast 3L World Record Difficulty
 sm.writetooffset(bytes.fromhex('02'), 0x10D)
@@ -487,7 +498,7 @@ sm.writetooffset(bytes.fromhex('02'), 0x10D)
 sm.writetooffset(bytes.fromhex(GC3secondtime), 0x10E)
 
 # Write Glacier Coast 3L Second Place Initials
-sm.writetooffset(bytes.fromhex(GC3secondname), 0x112)
+sm.writetooffset(bytes.fromhex(GC3secondname), 0x111)
 
 # Write Glacier Coast 3L Second Place Difficulty
 sm.writetooffset(bytes.fromhex('02'), 0x113)
@@ -496,7 +507,7 @@ sm.writetooffset(bytes.fromhex('02'), 0x113)
 sm.writetooffset(bytes.fromhex(GC3thirdtime), 0x114)
 
 # Write Glacier Coast 3L Third Place Initials
-sm.writetooffset(bytes.fromhex(GC3thirdname), 0x118)
+sm.writetooffset(bytes.fromhex(GC3thirdname), 0x117)
 
 # Write Glacier Coast 3L Third Place Difficulty
 sm.writetooffset(bytes.fromhex('02'), 0x119)
@@ -505,7 +516,7 @@ sm.writetooffset(bytes.fromhex('02'), 0x119)
 sm.writetooffset(bytes.fromhex(GC1time), 0x11A)
 
 # Write Glacier Coast 1L World Record Initials
-sm.writetooffset(bytes.fromhex(GC1name), 0x11E)
+sm.writetooffset(bytes.fromhex(GC1name), 0x11D)
 
 # Write Glacier Coast 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('02'), 0x11F)
@@ -661,49 +672,49 @@ sm.writetooffset(bytes.fromhex(splits.GC_split2), 0x1D5)
 sm.writetooffset(bytes.fromhex(SBRtime), 0x1D8)
 
 # Write Sunny Beach Reverse World Record initials
-sm.writetooffset(bytes.fromhex(SBRname), 0x1DC)
+sm.writetooffset(bytes.fromhex(SBRname), 0x1DB)
 
 # Write Sunset Bay Reverse World Record time
 sm.writetooffset(bytes.fromhex(SBayRtime), 0x1DD)
 
 # Write Sunset Bay Reverse World Record initials
-sm.writetooffset(bytes.fromhex(SBayRname), 0x1E1)
+sm.writetooffset(bytes.fromhex(SBayRname), 0x1E0)
 
 # Write Marine Fortress Reverse World Record time
 sm.writetooffset(bytes.fromhex(MFRtime), 0x1E2)
 
 # Write Marine Fortress Reverse World Record initials
-sm.writetooffset(bytes.fromhex(MFRname), 0x1E6)
+sm.writetooffset(bytes.fromhex(MFRname), 0x1E5)
 
 # Write Drake Lake Reverse World Record time
 sm.writetooffset(bytes.fromhex(DLRtime), 0x1E7)
 
 # Write Drake Lake Reverse World Record initials
-sm.writetooffset(bytes.fromhex(DLRname), 0x1EB)
+sm.writetooffset(bytes.fromhex(DLRname), 0x1EA)
 
 # Write Port Blue Reverse World Record time
 sm.writetooffset(bytes.fromhex(PBRtime), 0x1EC)
 
 # Write Port Blue Reverse World Record initials
-sm.writetooffset(bytes.fromhex(PBRname), 0x1F0)
+sm.writetooffset(bytes.fromhex(PBRname), 0x1EF)
 
 # Write Twilight City Reverse World Record time
 sm.writetooffset(bytes.fromhex(TCRtime), 0x1F1)
 
 # Write Twilight City Reverse World Record initials
-sm.writetooffset(bytes.fromhex(TCRname), 0x1F5)
+sm.writetooffset(bytes.fromhex(TCRname), 0x1F4)
 
 # Write Southern Island Reverse World Record time
 sm.writetooffset(bytes.fromhex(SIRtime), 0x1F6)
 
 # Write Southern Island Reverse World Record initials
-sm.writetooffset(bytes.fromhex(SIRname), 0x1FA)
+sm.writetooffset(bytes.fromhex(SIRname), 0x1F9)
 
 # Write Glacier Coast Reverse World Record time
 sm.writetooffset(bytes.fromhex(GCRtime), 0x1FB)
 
 # Write Glacier Coast Reverse World Record initials
-sm.writetooffset(bytes.fromhex(GCRname), 0x1FF)
+sm.writetooffset(bytes.fromhex(GCRname), 0x1FE)
 
 
 ######################
