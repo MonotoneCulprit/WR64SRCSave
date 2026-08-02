@@ -4,6 +4,7 @@
 import os
 import sys
 from datetime import datetime
+import shutil
 import srcomapi
 import srcomapi.datatypes as dt
 import requests
@@ -22,6 +23,10 @@ date_string = now.strftime("%m-%d-%Y")
 filename = f"wr64_srcomsave_{date_string}.eep"
 with open("Output/" + filename, "wb") as file:
     file.write((b"\x00") * (0x1FF + 1))
+
+mpkfilename = f"wr64_srcomsave_{date_string}.mpk"
+
+shutil.copy("DONOTDELETE.mpk", "Output/" + mpkfilename)
 
 # Get 3 Lap top 3 data for each level
 SB3data = sm.gettopthree(ids.SB_id, ids.ThreeL_id)
@@ -721,3 +726,19 @@ sm.writetooffset(bytes.fromhex(GCRname), 0x1FE)
 
 checksum = sm.calculatechecksum()
 sm.writetooffset(bytes.fromhex(checksum), 0x2)
+
+
+###########################
+### Create mpk from eep ###
+###########################
+
+eeppath = "Output/" + filename
+mpkpath = "Output/" + mpkfilename
+mpkoffset = 0x7E00
+
+with open(eeppath, "rb") as eepfile:
+    eepdata = eepfile.read(512)
+    
+with open(mpkpath, "r+b") as mpkfile:
+    mpkfile.seek(mpkoffset)
+    mpkfile.write(eepdata)
