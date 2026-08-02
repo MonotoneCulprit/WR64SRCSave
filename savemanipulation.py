@@ -151,7 +151,7 @@ def extractnames(data):
     return data.Player[0], data.Player[1], data.Player[2]
 
 def writetooffset(data, offset):
-    with open(filename, "r+b") as wr64_save:
+    with open("Output/" + filename, "r+b") as wr64_save:
         wr64_save.seek(offset)
         wr64_save.write(data)
 
@@ -196,7 +196,7 @@ def createinitialshex(name):
     return inithex
 
 def calculatechecksum():
-     with open(filename, "r+b") as wr64_save:
+     with open("Output/" + filename, "r+b") as wr64_save:
         data = wr64_save.read(0x200)
 
         # Slice from byte index 4 to 0x1FF

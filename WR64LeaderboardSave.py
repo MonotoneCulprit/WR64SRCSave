@@ -20,7 +20,7 @@ api = srcomapi.SpeedrunCom()
 now = datetime.now()
 date_string = now.strftime("%m-%d-%Y")
 filename = f"wr64_srcomsave_{date_string}.eep"
-with open(filename, "wb") as file:
+with open("Output/" + filename, "wb") as file:
     file.write((b"\x00") * (0x1FF + 1))
 
 # Get 3 Lap top 3 data for each level
@@ -94,8 +94,6 @@ SI3firstname, SI3secondname, SI3thirdname = sm.extractnames(SI3data)
 SI3firstname = sm.createinitialshex(SI3firstname)
 SI3secondname = sm.createinitialshex(SI3secondname)
 SI3thirdname = sm.createinitialshex(SI3thirdname)
-
-print(TC3firsttime)
 
 # Isolate 1 Lap times and names into individual variables for each level
 SB1time = sm.extracttime_mariner(SB1data)
