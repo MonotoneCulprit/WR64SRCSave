@@ -150,3 +150,52 @@ def writetooffset(data, offset):
         wr64_save.seek(offset)
         wr64_save.write(data)
 
+def createinitialshex(name):
+    name = name.lower()
+    init1 = name[0]
+    init2 = name[1]
+    init3 = name[2]
+    
+    alpha_map = {chr(i): str(i - 96) for i in range(97, 123)}
+    alphatable = str.maketrans(alpha_map)
+    
+    if not init1.isalpha():
+        init1 = '-'
+        init1 = '11100'
+    else:
+        init1 = init1.translate(alphatable)
+        init1 = f"{int(init1):05b}"
+    
+    if not init2.isalpha():
+        init2 = '-'
+        init2 = '11100'
+    else:
+        init2 = init2.translate(alphatable)
+        init2 = f"{int(init2):05b}"
+        
+    if not init3.isalpha():
+        init3 = '-'
+        init3 = '11100'
+    else:
+        init3 = init3.translate(alphatable)
+        init3 = f"{int(init3):05b}"
+    
+    
+    initfull = '1' + init1 + init2 + init3
+    
+    inithex = f"{int(initfull, 2):04X}"
+    
+    return inithex
+
+def calculatechecksum():
+     with open("Wave Race 64 BLANK.eep", "r+b") as wr64_save:
+        data = wr64_save.read(0x200)
+
+        # Slice from byte index 4 to 0x1FF
+        aftercheck = data[4:0x200]
+
+        # Sum all the integer byte values
+        integersum = sum(aftercheck)
+
+        checksum = f"{integersum & 0xFFFF:04X}"
+        return checksum
