@@ -1,4 +1,4 @@
-# Wave Race 64 - SRC Leaderboard Save Generator
+# Wave Race 64 - SRCom Save Generator
 Program that generates a .eep and .mpk save for Wave Race 64 using the speedrun.com leaderboards.
 
 # EEP
