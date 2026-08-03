@@ -6,10 +6,6 @@ import sys
 from datetime import datetime
 import shutil
 import srcomapi
-import srcomapi.datatypes as dt
-import requests
-import json
-import pandas as pd
 import ids
 import splits
 import savemanipulation as sm

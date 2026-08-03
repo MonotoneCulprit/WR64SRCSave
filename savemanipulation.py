@@ -1,13 +1,9 @@
 import os
 import sys
 from datetime import datetime
-import srcomapi
-import srcomapi.datatypes as dt
 import requests
-import json
 import pandas as pd
 import ids
-import splits
 
 if getattr(sys, 'frozen', False):
     RunLocation = os.path.dirname(sys.executable)
