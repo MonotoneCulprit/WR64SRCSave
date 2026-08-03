@@ -207,3 +207,14 @@ def calculatechecksum():
 
         checksum = f"{integersum & 0xFFFF:04X}"
         return checksum
+    
+def get_resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+# Example usage in your script:
+config_path = get_resource_path("config.json")

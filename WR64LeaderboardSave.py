@@ -14,9 +14,15 @@ import ids
 import splits
 import savemanipulation as sm
 
+print("Connecting to Speedrun.com API")
 # Connect to srcomapi
 api = srcomapi.SpeedrunCom()
 
+print("Creating Output directory if it doesn't exist")
+# Create Output folder if not found
+os.makedirs("./Output", exist_ok=True)
+
+print("Creating blank .eep and .mpk files")
 # Create blank save with today's date
 now = datetime.now()
 date_string = now.strftime("%m-%d-%Y")
@@ -26,7 +32,9 @@ with open("Output/" + filename, "wb") as file:
 
 mpkfilename = f"wr64_srcomsave_{date_string}.mpk"
 
-shutil.copy("DONOTDELETE.mpk", "Output/" + mpkfilename)
+shutil.copy(sm.get_resource_path("./DONOTDELETE.mpk"), "Output/" + mpkfilename)
+
+print("Pulling leaderboard data from Speedrun.com API")
 
 # Get 3 Lap top 3 data for each level
 SB3data = sm.gettopthree(ids.SB_id, ids.ThreeL_id)
@@ -57,6 +65,8 @@ PBRdata = sm.gettopthree(ids.PB_id, ids.Reverse_id)
 TCRdata = sm.gettopthree(ids.TC_id, ids.Reverse_id)
 GCRdata = sm.gettopthree(ids.GC_id, ids.Reverse_id)
 SIRdata = sm.gettopthree(ids.SI_id, ids.Reverse_id)
+
+print("Isolating times and names")
 
 # Isolate 3 Lap times and names into individual variables for each level
 SB3firsttime, SB3secondtime, SB3thirdtime = sm.extracttimes_mariner(SB3data)
@@ -161,6 +171,8 @@ SIRname = sm.createinitialshex(SIRname)
 ### Write Settings ###
 ######################
 
+print("Writing settings to " + filename)
+
 # Write Header
 sm.writetooffset(bytes.fromhex('5445'), 0x0)
 
@@ -219,6 +231,8 @@ sm.writetooffset(bytes.fromhex('FFFFFFFFFFFFFF'), 0x59)
 #####################################
 ### Write Record Times & Initials ###
 #####################################
+
+print("Writing Forward Records to " + filename)
 
 ############## SUNNY BEACH ##############
 
@@ -529,6 +543,8 @@ sm.writetooffset(bytes.fromhex('02'), 0x11F)
 ### Write Scores & Initials###
 ##############################
 
+print("Writing Blank Scores to " + filename)
+
 # Write Dolphin Park first place score & initials
 sm.writetooffset(bytes.fromhex('0000000000'), 0x120)
 
@@ -615,6 +631,8 @@ sm.writetooffset(bytes.fromhex('0000000000'), 0x1A2)
 ### Write Split Times ###
 #########################
 
+print("Writing Splits to " + filename)
+
 # Write FF Space before splits
 sm.writetooffset(bytes.fromhex('FF'), 0x1A7)
 
@@ -671,6 +689,8 @@ sm.writetooffset(bytes.fromhex(splits.GC_split2), 0x1D5)
 ### Write Reverse Record Times & Initials ###
 #############################################
 
+print("Writing Reverse Records to " + filename)
+
 # Write Sunny Beach Reverse World Record time
 sm.writetooffset(bytes.fromhex(SBRtime), 0x1D8)
 
@@ -724,13 +744,20 @@ sm.writetooffset(bytes.fromhex(GCRname), 0x1FE)
 ### Write Checksum ###
 ######################
 
+print("Calculating Checksum")
+
 checksum = sm.calculatechecksum()
+
+print("Writing Checksum to " + filename)
+
 sm.writetooffset(bytes.fromhex(checksum), 0x2)
 
 
 ###########################
 ### Create mpk from eep ###
 ###########################
+
+print("Copying data from " + filename + " to " + mpkfilename)
 
 eeppath = "Output/" + filename
 mpkpath = "Output/" + mpkfilename
@@ -742,3 +769,6 @@ with open(eeppath, "rb") as eepfile:
 with open(mpkpath, "r+b") as mpkfile:
     mpkfile.seek(mpkoffset)
     mpkfile.write(eepdata)
+
+print("Save generation complete!")
+input("Press Enter to exit...")
