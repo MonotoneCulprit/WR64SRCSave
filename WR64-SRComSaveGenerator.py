@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Creating a Wave Race 64 Save using the current top 3 times for each track.
+# Creating two Wave Race 64 saves using the current top 1/3 time(s) for each track.
 
 import os
 import sys
