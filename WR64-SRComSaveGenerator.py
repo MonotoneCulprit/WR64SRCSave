@@ -267,7 +267,7 @@ sm.writetooffset(bytes.fromhex('00'), 0x71)
 sm.writetooffset(bytes.fromhex(SB1time), 0x72)
 
 # Write Sunny Beach 1L World Record Initials
-sm.writetooffset(bytes.fromhex(SB3firstname), 0x75)
+sm.writetooffset(bytes.fromhex(SB1name), 0x75)
 
 # Write Sunny Beach 1L World Record Difficulty
 sm.writetooffset(bytes.fromhex('00'), 0x77)
