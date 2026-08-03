@@ -14,25 +14,30 @@ import ids
 import splits
 import savemanipulation as sm
 
+if getattr(sys, 'frozen', False):
+    RunLocation = os.path.dirname(sys.executable)
+else:
+    RunLocation = os.path.dirname(os.path.realpath(__file__))
+
 print("Connecting to Speedrun.com API")
 # Connect to srcomapi
 api = srcomapi.SpeedrunCom()
 
 print("Creating Output directory if it doesn't exist")
 # Create Output folder if not found
-os.makedirs("./Output", exist_ok=True)
+os.makedirs(RunLocation + "/Output", exist_ok=True)
 
 print("Creating blank .eep and .mpk files")
 # Create blank save with today's date
 now = datetime.now()
 date_string = now.strftime("%m-%d-%Y")
 filename = f"wr64_srcomsave_{date_string}.eep"
-with open("Output/" + filename, "wb") as file:
+with open(RunLocation + "/Output/" + filename, "wb") as file:
     file.write((b"\x00") * (0x1FF + 1))
 
 mpkfilename = f"wr64_srcomsave_{date_string}.mpk"
 
-shutil.copy(sm.get_resource_path("./DONOTDELETE.mpk"), "Output/" + mpkfilename)
+shutil.copy(sm.get_resource_path("./DONOTDELETE.mpk"), RunLocation + "/Output/" + mpkfilename)
 
 print("Pulling leaderboard data from Speedrun.com API")
 
@@ -759,8 +764,8 @@ sm.writetooffset(bytes.fromhex(checksum), 0x2)
 
 print("Copying data from " + filename + " to " + mpkfilename)
 
-eeppath = "Output/" + filename
-mpkpath = "Output/" + mpkfilename
+eeppath = RunLocation + "/Output/" + filename
+mpkpath = RunLocation + "/Output/" + mpkfilename
 mpkoffset = 0x7E00
 
 with open(eeppath, "rb") as eepfile:

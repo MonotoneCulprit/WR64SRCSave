@@ -9,6 +9,11 @@ import pandas as pd
 import ids
 import splits
 
+if getattr(sys, 'frozen', False):
+    RunLocation = os.path.dirname(sys.executable)
+else:
+    RunLocation = os.path.dirname(os.path.realpath(__file__))
+
 now = datetime.now()
 date_string = now.strftime("%m-%d-%Y")
 filename = f"wr64_srcomsave_{date_string}.eep"
@@ -151,7 +156,7 @@ def extractnames(data):
     return data.Player[0], data.Player[1], data.Player[2]
 
 def writetooffset(data, offset):
-    with open("Output/" + filename, "r+b") as wr64_save:
+    with open(RunLocation + "/Output/" + filename, "r+b") as wr64_save:
         wr64_save.seek(offset)
         wr64_save.write(data)
 
@@ -196,7 +201,7 @@ def createinitialshex(name):
     return inithex
 
 def calculatechecksum():
-     with open("Output/" + filename, "r+b") as wr64_save:
+     with open(RunLocation + "/Output/" + filename, "r+b") as wr64_save:
         data = wr64_save.read(0x200)
 
         # Slice from byte index 4 to 0x1FF
@@ -215,6 +220,3 @@ def get_resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
-
-# Example usage in your script:
-config_path = get_resource_path("config.json")
