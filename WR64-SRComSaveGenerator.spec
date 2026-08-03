@@ -6,7 +6,7 @@ datas += collect_data_files('srcomapi')
 
 
 a = Analysis(
-    ['WR64LeaderboardSave.py'],
+    ['WR64-SRComSaveGenerator.py'],
     pathex=[],
     binaries=[],
     datas=datas,
@@ -26,7 +26,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='WR64LeaderboardSave',
+    name='WR64-SRComSaveGenerator',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
